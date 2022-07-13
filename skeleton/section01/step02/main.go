@@ -5,7 +5,7 @@ package main
 
 // main関数から実行される
 func main() {
-	// TODO: 文字列型の変数msgに"Hello, 世界"を代入する
-
+	// 文字列型の変数msgに"Hello, 世界"を代入する
+	msg := "Hello, 世界"
 	println(msg)
 }
