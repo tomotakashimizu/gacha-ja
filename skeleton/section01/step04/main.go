@@ -19,6 +19,9 @@ func main() {
 
 	// 変数numが0のときに"アタリ"と表示し
 	// そうでない場合は"ハズレ"と表示する
-	result := []string{"アタリ", "ハズレ"}
-	fmt.Println(result[num])
+	if num == 0 {
+		fmt.Println("アタリ")
+	} else {
+		fmt.Println("ハズレ")
+	}
 }
