@@ -18,7 +18,7 @@ func main() {
 	fmt.Println("1: 単発ガチャ 2: 11連ガチャ")
 
 	// LOOPというラベルのついた無限ループを作る
-LOOP:
+	// LOOP:
 	for {
 		fmt.Print(">")
 		var kind int
@@ -28,11 +28,11 @@ LOOP:
 		switch kind {
 		case 1: // 単発ガチャ
 			n = 1
-			break LOOP
+			break
 		case 2: // 11連ガチャ
 			// 変数nに11を入れる
 			n = 11
-			break LOOP
+			continue
 		default:
 			fmt.Println("もう一度入力してください")
 		}
