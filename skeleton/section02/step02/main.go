@@ -31,6 +31,8 @@ func main() {
 
 	// 長さnの文字列型のスライスを変数resultとして定義する
 	result := make([]string, n)
+	fmt.Printf("%v %T\n", result, result)
+	fmt.Printf("%v %T\n", cap(result), cap(result))
 
 	/* 継続条件をiがresultの要素数より小さい場合にする */
 	for i := 0; i < len(result); i++ {
