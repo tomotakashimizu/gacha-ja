@@ -53,9 +53,22 @@ func (p *player) draw(n int) {
 
 	// TODO: ガチャ券で足りる場合はガチャ券だけ使う
 	// ガチャ券から優先的に使う
-	if p.tickets > n {
+	// if p.tickets > n {
+	// 	p.tickets -= n
+	// 	return
+	// }
+	if n <= p.tickets {
 		p.tickets -= n
 		return
+	} else {
+		for p.tickets > 0 {
+			p.tickets--
+			n--
+		}
+		// 上記のfor文 or 下記
+		// n = n - p.tickets
+		// p.tickets = 0
+		p.coin -= n * 10 // 1回あたり10枚消費する
 	}
 
 	p.tickets = 0
@@ -74,6 +87,8 @@ func main() {
 
 	fmt.Println(results)
 	fmt.Println(summary)
+
+	fmt.Println(p)
 }
 
 func inputN(p *player) int {
