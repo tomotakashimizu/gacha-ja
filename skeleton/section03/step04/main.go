@@ -30,8 +30,9 @@ func main() {
 	// 関数inputNを呼び出しその結果を変数nに代入
 	n := inputN()
 
-	// TODO: 関数drawNの引数に変数nを指定して呼び出す
+	// 関数drawNの引数に変数nを指定して呼び出す
 	// 結果を変数resultsとsummaryに代入する
+	results, summary := drawN(n)
 
 	fmt.Println(results)
 	fmt.Println(summary)
@@ -50,12 +51,13 @@ func inputN() int {
 	return n
 }
 
-func drawN(n int) /* TODO: 戻り値として結果をレア度ごとの集計を返す */ {
+/* 戻り値として結果をレア度ごとの集計を返す */
+func drawN(n int) ([]card, map[rarity]int) {
 	results := make([]card, n)
 	summary := make(map[rarity]int)
 	for i := 0; i < n; i++ {
-		// TODO: 関数drawが返す値をresultsのi番目に代入する
-
+		// 関数drawが返す値をresultsのi番目に代入する
+		results[i] = draw()
 		summary[results[i].rarity]++
 	}
 
@@ -63,18 +65,20 @@ func drawN(n int) /* TODO: 戻り値として結果をレア度ごとの集計�
 	return results, summary
 }
 
-func draw() /* TODO: 戻り値の型をcardにする */ {
+/* 戻り値の型をcardにする */
+func draw() card {
 	num := rand.Intn(100)
 
 	switch {
 	case num < 80:
-		return card{rarity: rarityN, name:"スライム"}
+		return card{rarity: rarityN, name: "スライム"}
 	case num < 95:
-		return card{rarity: rarityR, name:"オーク"}
+		return card{rarity: rarityR, name: "オーク"}
 	case num < 99:
-		// TODO: rarityフィールドがraritySRで
+		// rarityフィールドがraritySRで
 		// nameフィールドが"ドラゴン"のcard型の値を返す
+		return card{rarity: raritySR, name: "ドラゴン"}
 	default:
-		return card{rarity: rarityXR, name:"イフリート"}
+		return card{rarity: rarityXR, name: "イフリート"}
 	}
 }
