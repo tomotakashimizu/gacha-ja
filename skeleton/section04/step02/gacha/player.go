@@ -3,19 +3,24 @@ package gacha
 import "fmt"
 
 type Player struct {
-	tickets int // ガチャ券の枚数
-	coin    int // コイン
+	Tickets int // ガチャ券の枚数
+	Coin    int // コイン
 }
 
 // TODO: 引数にガチャ券とコインの枚数をもらい、
 // それぞれをフィールドに設定したPlayer型の値を生成し、
 // そのポインタを返すNewPlayer関数を作る
+// func (p *Player) NewPlayer(tickets int, coin int) Player {
+// 	p.Tickets = tickets
+// 	p.Coin = coin
+// 	return *p
+// }
 
-// TODO: メソッドをエクスポートする
+// メソッドをエクスポートする
 // プレイヤーが行えるガチャの回数
-func (p *Player) drawableNum() int {
+func (p *Player) DrawableNum() int {
 	// ガチャ券は1枚で1回、コインは10枚で1回ガチャが行える
-	return p.tickets + p.coin/10
+	return p.Tickets + p.Coin/10
 }
 
 func (p *Player) draw(n int) {
@@ -26,11 +31,12 @@ func (p *Player) draw(n int) {
 	}
 
 	// ガチャ券から優先的に使う
-	if p.tickets > n {
-		p.tickets -= n
+	if p.Tickets >= n {
+		p.Tickets -= n
 		return
 	}
 
-	p.tickets = 0
-	p.coin -= n * 10 // 1回あたり10枚消費する
+	n -= p.Tickets
+	p.Tickets = 0
+	p.Coin -= n * 10 // 1回あたり10枚消費する
 }
