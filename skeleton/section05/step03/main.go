@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/gohandson/gacha-ja/gacha"
+	"github.com/tomotakashimizu/gacha"
 )
 
 func main() {

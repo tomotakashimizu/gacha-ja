@@ -6,9 +6,10 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"strconv"
 
-	"github.com/gohandson/gacha-ja/gacha"
+	// "strconv"
+
+	"github.com/tomotakashimizu/gacha"
 )
 
 var (
