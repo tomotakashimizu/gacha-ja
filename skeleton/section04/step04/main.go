@@ -4,9 +4,8 @@ package main
 
 import (
 	"fmt"
-
-	// TODO: インポートパスを公開したものに変更する
-	"github.com/gohandson/tenntenn/gacha"
+	// インポートパスを公開したものに変更する
+	"github.com/tomotakashimizu/gacha"
 )
 
 func main() {
