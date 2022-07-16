@@ -4,9 +4,9 @@ package main
 
 import (
 	"fmt"
-
-	// TODO: インポートパスを公開したものに変更する
-	"github.com/gohandson/gacha-ja/gacha"
+	// "gacha-ja/skeleton/section04/step03/gacha"
+	// インポートパスを公開したものに変更する
+	"github.com/tomotakashimizu/gacha"
 )
 
 func main() {
@@ -17,6 +17,8 @@ func main() {
 
 	fmt.Println(results)
 	fmt.Println(summary)
+
+	fmt.Println(p)
 }
 
 func inputN(p *gacha.Player) int {
