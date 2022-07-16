@@ -39,6 +39,9 @@ func main() {
 
 	fmt.Println(results)
 	fmt.Println(summary)
+
+	// 残りのガチャ券の枚数
+	fmt.Println(p)
 }
 
 func inputN(p *player) int {
