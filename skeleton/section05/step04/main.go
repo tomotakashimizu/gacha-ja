@@ -15,7 +15,7 @@ func main() {
 	p := gacha.NewPlayer(tickets, 100)
 
 	n := inputN(p)
-	results, summary := gacha.DrawN(p, n)
+	results, summary, _ := gacha.DrawN(p, n)
 
 	saveResults(results)
 	saveSummary(summary)
