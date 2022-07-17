@@ -6,11 +6,10 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"gacha-ja/skeleton/section07/step01/gacha"
 	"os"
 	"regexp"
 	"strconv"
-
-	"github.com/gohandson/gacha-ja/gacha"
 )
 
 var (
