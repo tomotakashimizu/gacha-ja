@@ -10,7 +10,8 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/gohandson/gacha-ja/gacha"
+	"gacha-ja/skeleton/section07/step04/gacha"
+
 	"github.com/tenntenn/sqlite"
 )
 

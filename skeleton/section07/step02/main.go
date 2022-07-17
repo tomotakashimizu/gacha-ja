@@ -4,10 +4,9 @@ package main
 
 import (
 	"fmt"
+	"gacha-ja/skeleton/section07/step02/gacha"
 	"net/http"
 	"os"
-
-	"github.com/gohandson/gacha-ja/gacha"
 )
 
 func main() {

@@ -26,7 +26,7 @@ func (p *Player) draw(n int) error {
 	}
 
 	// ガチャ券から優先的に使う
-	if p.tickets > n {
+	if p.tickets >= n {
 		p.tickets -= n
 		return nil
 	}

@@ -7,9 +7,9 @@ import (
 	"html/template"
 	"net/http"
 	"os"
-	"strconv"
 
-	"github.com/gohandson/gacha-ja/gacha"
+	// "strconv"
+	"gacha-ja/skeleton/section07/step03/gacha"
 )
 
 var tmpl = template.Must(template.New("index").Parse(`<!DOCTYPE html>
@@ -41,7 +41,7 @@ func run() error {
 	play := gacha.NewPlay(p)
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if /* TODO: テンプレートに結果の一覧を埋め込んでレスポンスにする */; err != nil {
+		if /* TODO: テンプレートに結果の一覧を埋め込んでレスポンスにする */ err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 	})
