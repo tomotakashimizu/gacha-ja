@@ -3,13 +3,13 @@
 package main
 
 import (
-	"errors"
+	// "errors"
 	"flag"
 	"fmt"
 	"os"
 	"strconv"
 
-	"github.com/gohandson/gacha-ja/gacha"
+	"github.com/tomotakashimizu/gacha"
 )
 
 var (
@@ -118,7 +118,7 @@ func saveSummary(summary map[gacha.Rarity]int) (rerr error) {
 	}()
 
 	for rarity, count := range summary {
-		fmt.Fprintf(f, "%s %d\n", rarity.String(), count)
+		fmt.Fprintf(f, "%s %d\n", rarity, count)
 	}
 
 	return nil
