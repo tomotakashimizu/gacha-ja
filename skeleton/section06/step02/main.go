@@ -87,13 +87,15 @@ func inputN(p *gacha.Player) int {
 func saveResults(results []*gacha.Card) (rerr error) {
 	f, err := os.Create("results.txt")
 	if err != nil {
-		// TODO: エラーを"result.txtの作成:"という文字列を付加してラップして返す
+		// エラーを"result.txtの作成:"という文字列を付加してラップして返す
+		return fmt.Errorf("result.txtの作成:%w", err)
 	}
 
 	defer func() {
 		if err := f.Close(); err != nil && rerr == nil {
-			// TODO: 関数saveResultsの戻り値になるようにエラーをrerrに代入する
+			// 関数saveResultsの戻り値になるようにエラーをrerrに代入する
 			// エラーは"result.txtのクローズ:"という文字列を付加してラップして返す
+			rerr = fmt.Errorf("result.txtのクローズ:%w", err)
 		}
 	}()
 
