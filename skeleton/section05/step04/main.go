@@ -7,7 +7,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/gohandson/gacha-ja/gacha"
+	"github.com/tomotakashimizu/gacha"
 )
 
 func main() {
@@ -27,10 +27,10 @@ func initialTickets() int {
 		os.Exit(1)
 	}
 
-	// TODO: プログラム引数の1つめを取得し
+	// プログラム引数の1つめを取得し
 	// strconv.Atoi関数でint型に変換する
 	// 第1戻り値は変数num、第2戻り値は変数errに代入する
-
+	num, err := strconv.Atoi(os.Args[1])
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -89,6 +89,6 @@ func saveSummary(summary map[gacha.Rarity]int) {
 	}()
 
 	for rarity, count := range summary {
-		fmt.Fprintf(f, "%s %d\n", rarity.String(), count)
+		fmt.Fprintf(f, "%s %d\n", rarity, count)
 	}
 }

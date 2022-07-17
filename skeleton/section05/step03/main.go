@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/gohandson/gacha-ja/gacha"
+	"github.com/tomotakashimizu/gacha"
 )
 
 func main() {
@@ -41,7 +41,8 @@ func saveResults(results []*gacha.Card) {
 	f, err := os.Create("results.txt")
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
-		// TODO: 終了コード1でプログラムを終了させる
+		// 終了コード1でプログラムを終了させる
+		os.Exit(1)
 	}
 
 	defer func() {
@@ -59,7 +60,8 @@ func saveSummary(summary map[gacha.Rarity]int) {
 	f, err := os.Create("summary.txt")
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
-		// TODO: 終了コード1でプログラムを終了させる
+		// 終了コード1でプログラムを終了させる
+		os.Exit(1)
 	}
 
 	defer func() {
@@ -69,6 +71,6 @@ func saveSummary(summary map[gacha.Rarity]int) {
 	}()
 
 	for rarity, count := range summary {
-		fmt.Fprintf(f, "%s %d\n", rarity.String(), count)
+		fmt.Fprintf(f, "%s %d\n", rarity, count)
 	}
 }

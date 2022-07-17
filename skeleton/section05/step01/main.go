@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/gohandson/gacha-ja/gacha"
+	"github.com/tomotakashimizu/gacha"
 )
 
 func main() {
@@ -38,8 +38,8 @@ func inputN(p *gacha.Player) int {
 }
 
 func saveResults(results []*gacha.Card) {
-	// TODO: results.txtというファイルを作成する
-
+	// results.txtというファイルを作成する
+	f, err := os.Create("results.txt")
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -52,7 +52,8 @@ func saveResults(results []*gacha.Card) {
 	}()
 
 	for _, result := range results {
-		// TODO: fmt.Fprintln関数を使ってresultをファイルに出力する
+		// fmt.Fprintln関数を使ってresultをファイルに出力する
+		fmt.Fprintln(f, result)
 	}
 }
 
@@ -64,12 +65,14 @@ func saveSummary(summary map[gacha.Rarity]int) {
 	}
 
 	defer func() {
-		// TODO: ファイルを閉じる
+		// ファイルを閉じる
 		// エラー発生した場合はfmt.Println関数で出力する
-
+		if err := f.Close(); err != nil {
+			fmt.Println(err)
+		}
 	}()
 
 	for rarity, count := range summary {
-		fmt.Fprintf(f, "%s %d\n", rarity.String(), count)
+		fmt.Fprintf(f, "%s %d\n", rarity, count)
 	}
 }
