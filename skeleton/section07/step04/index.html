@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ガチャ</title>
+  </head>
+  <body>
+    <form action="/draw">
+      <label for="num">枚数</label>
+      <input type="number" name="num" min="1" value="1" />
+      <input type="submit" value="ガチャを引く" />
+    </form>
+    <h1>結果一覧</h1>
+    <ol>
+      {{range .}}
+      <li>{{.}}</li>
+      {{end}}
+    </ol>
+  </body>
+</html>

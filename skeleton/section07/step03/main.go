@@ -4,35 +4,28 @@ package main
 
 import (
 	"fmt"
+	"gacha-ja/skeleton/section07/step03/gacha"
 	"html/template"
 	"net/http"
 	"os"
 	"strconv"
-
-	"github.com/gohandson/gacha-ja/gacha"
 )
 
-var tmpl = template.Must(template.New("index").Parse(`<!DOCTYPE html>
-<html>
-	<head><title>ガチャ</title></head>
-	<body>
-		<form action="/draw">
-			<label for="num">枚数</input>
-			<input type="number" name="num" min="1" value="1">
-			<input type="submit" value="ガチャを引く">
-		</form>
-		<h1>結果一覧</h1>
-		<ol>{{range .}}
-		<li>{{.}}</li>
-		{{end}}</ol>
-	</body>
-</html>`))
+func renderTemplate(w http.ResponseWriter, tmpl string, results []*gacha.Card) error {
+	t, err := template.ParseFiles(tmpl + ".html")
+	if err != nil {
+		return err
+	}
+	return t.Execute(w, results)
+}
 
 func main() {
 	if err := run(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
+	// なぜか呼ばれない
+	fmt.Println("サーバーが起動しました")
 }
 
 func run() error {
@@ -41,15 +34,18 @@ func run() error {
 	play := gacha.NewPlay(p)
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if /* TODO: テンプレートに結果の一覧を埋め込んでレスポンスにする */; err != nil {
+		/* テンプレートに結果の一覧を埋め込んでレスポンスにする */
+		if err := renderTemplate(w, "skeleton/section07/step03/index", play.Results()); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
+			// fmt.Fprintln(w, err.Error())
 		}
 	})
 
+	// "ガチャを引く"submitボタンが押されると呼ばれる
 	http.HandleFunc("/draw", func(w http.ResponseWriter, r *http.Request) {
-		// TODO: r.FormValueメソッドを使ってフォームで入力したガチャの回数を取得
+		// r.FormValueメソッドを使ってフォームで入力したガチャの回数を取得
 		// ガチャを行う回数は"num"で取得できる
-
+		num, err := strconv.Atoi(r.FormValue("num"))
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -66,8 +62,11 @@ func run() error {
 			return
 		}
 
-		// TODO: "/"（トップ）にhttp.StatusFoundのステータスでリダイレクトする
+		// "/"（トップ）にhttp.StatusFoundのステータスでリダイレクトする
+		http.Redirect(w, r, "/", http.StatusFound)
 	})
 
+	// ここは呼ばれる
+	fmt.Println("サーバーが起動しました")
 	return http.ListenAndServe(":8080", nil)
 }

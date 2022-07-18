@@ -5,30 +5,19 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"gacha-ja/skeleton/section07/step04/gacha"
+	"gacha-ja/skeleton/section07/step04/sqlite"
 	"html/template"
 	"net/http"
 	"os"
 	"strconv"
-
-	"github.com/gohandson/gacha-ja/gacha"
-	"github.com/tenntenn/sqlite"
 )
 
-var tmpl = template.Must(template.New("index").Parse(`<!DOCTYPE html>
-<html>
-	<head><title>ガチャ</title></head>
-	<body>
-		<form action="/draw">
-			<label for="num">枚数</input>
-			<input type="number" name="num" min="1" value="1">
-			<input type="submit" value="ガチャを引く">
-		</form>
-		<h1>結果一覧</h1>
-		<ol>{{range .}}
-		<li>{{.}}</li>
-		{{end}}</ol>
-	</body>
-</html>`))
+var templates = template.Must(template.ParseFiles("skeleton/section07/step04/index.html"))
+
+func renderTemplate(w http.ResponseWriter, tmpl string, results []*gacha.Card) error {
+	return templates.ExecuteTemplate(w, tmpl+".html", results)
+}
 
 func main() {
 	if err := run(); err != nil {
@@ -38,6 +27,7 @@ func main() {
 }
 
 func run() error {
+	fmt.Println("start run")
 
 	db, err := sql.Open(sqlite.DriverName, "results.db")
 	if err != nil {
@@ -53,19 +43,23 @@ func run() error {
 	play := gacha.NewPlay(p)
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		// TODO: データベースから結果を最大100件取得し、変数resultsに代入
-
+		fmt.Println("GET /")
+		// データベースから結果を最大100件取得し、変数resultsに代入
+		results, err := getResults(db, 100)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		if err := tmpl.Execute(w, results); err != nil {
+		if err := renderTemplate(w, "index", results); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 	})
 
+	// "ガチャを引く"submitボタンが押されると呼ばれる
 	http.HandleFunc("/draw", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("POST /draw")
+
 		num, err := strconv.Atoi(r.FormValue("num"))
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -80,7 +74,6 @@ func run() error {
 			if err := saveResult(db, play.Result()); err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
-
 			}
 		}
 
@@ -92,6 +85,7 @@ func run() error {
 		http.Redirect(w, r, "/", http.StatusFound)
 	})
 
+	fmt.Println("サーバーが起動しました")
 	return http.ListenAndServe(":8080", nil)
 }
 
@@ -112,8 +106,8 @@ func createTable(db *sql.DB) error {
 
 func saveResult(db *sql.DB, card *gacha.Card) error {
 	const sqlStr = `INSERT INTO results(rarity, name) VALUES (?,?);`
-	// TODO: Execメソッドを用いてINSERT文を実行する
-
+	// Execメソッドを用いてINSERT文を実行する
+	_, err := db.Exec(sqlStr, card.Rarity.String(), card.Name)
 	if err != nil {
 		return err
 	}
@@ -131,8 +125,9 @@ func getResults(db *sql.DB, limit int) ([]*gacha.Card, error) {
 	var results []*gacha.Card
 	for rows.Next() {
 		var card gacha.Card
-		// TODO: rows.Scanメソッドを用いてレコードをcardのフィールドに読み込む
-
+		// rows.Scanメソッドを用いてレコードをcardのフィールドに読み込む
+		// cardに値が代入される
+		err := rows.Scan(&card.Rarity, &card.Name)
 		if err != nil {
 			return nil, fmt.Errorf("Scan:%w", err)
 		}
