@@ -5,14 +5,12 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"gacha-ja/skeleton/section07/step04/gacha"
+	"gacha-ja/skeleton/section07/step04/sqlite"
 	"html/template"
 	"net/http"
 	"os"
 	"strconv"
-
-	"gacha-ja/skeleton/section07/step04/gacha"
-
-	"github.com/tenntenn/sqlite"
 )
 
 var tmpl = template.Must(template.New("index").Parse(`<!DOCTYPE html>
