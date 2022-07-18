@@ -13,21 +13,13 @@ import (
 	"strconv"
 )
 
-var tmpl = template.Must(template.New("index").Parse(`<!DOCTYPE html>
-<html>
-	<head><title>ガチャ</title></head>
-	<body>
-		<form action="/draw">
-			<label for="num">枚数</input>
-			<input type="number" name="num" min="1" value="1">
-			<input type="submit" value="ガチャを引く">
-		</form>
-		<h1>結果一覧</h1>
-		<ol>{{range .}}
-		<li>{{.}}</li>
-		{{end}}</ol>
-	</body>
-</html>`))
+func renderTemplate(w http.ResponseWriter, tmpl string, results []*gacha.Card) error {
+	t, err := template.ParseFiles(tmpl + ".html")
+	if err != nil {
+		return err
+	}
+	return t.Execute(w, results)
+}
 
 func main() {
 	if err := run(); err != nil {
@@ -61,7 +53,7 @@ func run() error {
 			return
 		}
 
-		if err := tmpl.Execute(w, results); err != nil {
+		if err := renderTemplate(w, "skeleton/section07/step04/index", results); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 	})
