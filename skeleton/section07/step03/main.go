@@ -4,12 +4,11 @@ package main
 
 import (
 	"fmt"
+	"gacha-ja/skeleton/section07/step03/gacha"
 	"html/template"
 	"net/http"
 	"os"
-
-	// "strconv"
-	"gacha-ja/skeleton/section07/step03/gacha"
+	"strconv"
 )
 
 var tmpl = template.Must(template.New("index").Parse(`<!DOCTYPE html>
@@ -41,15 +40,17 @@ func run() error {
 	play := gacha.NewPlay(p)
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if /* TODO: テンプレートに結果の一覧を埋め込んでレスポンスにする */ err != nil {
+		/* テンプレートに結果の一覧を埋め込んでレスポンスにする */
+		if err := tmpl.Execute(w, play.Results()); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 	})
 
+	// "ガチャを引く"submitボタンが押されると呼ばれる
 	http.HandleFunc("/draw", func(w http.ResponseWriter, r *http.Request) {
-		// TODO: r.FormValueメソッドを使ってフォームで入力したガチャの回数を取得
+		// r.FormValueメソッドを使ってフォームで入力したガチャの回数を取得
 		// ガチャを行う回数は"num"で取得できる
-
+		num, err := strconv.Atoi(r.FormValue("num"))
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -66,7 +67,8 @@ func run() error {
 			return
 		}
 
-		// TODO: "/"（トップ）にhttp.StatusFoundのステータスでリダイレクトする
+		// "/"（トップ）にhttp.StatusFoundのステータスでリダイレクトする
+		http.Redirect(w, r, "/", http.StatusFound)
 	})
 
 	return http.ListenAndServe(":8080", nil)
