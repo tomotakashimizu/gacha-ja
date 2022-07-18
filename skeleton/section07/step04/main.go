@@ -13,12 +13,10 @@ import (
 	"strconv"
 )
 
+var templates = template.Must(template.ParseFiles("skeleton/section07/step04/index.html"))
+
 func renderTemplate(w http.ResponseWriter, tmpl string, results []*gacha.Card) error {
-	t, err := template.ParseFiles(tmpl + ".html")
-	if err != nil {
-		return err
-	}
-	return t.Execute(w, results)
+	return templates.ExecuteTemplate(w, tmpl+".html", results)
 }
 
 func main() {
@@ -53,7 +51,7 @@ func run() error {
 			return
 		}
 
-		if err := renderTemplate(w, "skeleton/section07/step04/index", results); err != nil {
+		if err := renderTemplate(w, "index", results); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 	})
