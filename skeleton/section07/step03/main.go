@@ -11,27 +11,21 @@ import (
 	"strconv"
 )
 
-var tmpl = template.Must(template.New("index").Parse(`<!DOCTYPE html>
-<html>
-	<head><title>ガチャ</title></head>
-	<body>
-		<form action="/draw">
-			<label for="num">枚数</input>
-			<input type="number" name="num" min="1" value="1">
-			<input type="submit" value="ガチャを引く">
-		</form>
-		<h1>結果一覧</h1>
-		<ol>{{range .}}
-		<li>{{.}}</li>
-		{{end}}</ol>
-	</body>
-</html>`))
+func renderTemplate(w http.ResponseWriter, tmpl string, results []*gacha.Card) error {
+	t, err := template.ParseFiles(tmpl + ".html")
+	if err != nil {
+		return err
+	}
+	return t.Execute(w, results)
+}
 
 func main() {
 	if err := run(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
+	// なぜか呼ばれない
+	fmt.Println("サーバーが起動しました")
 }
 
 func run() error {
@@ -41,8 +35,9 @@ func run() error {
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		/* テンプレートに結果の一覧を埋め込んでレスポンスにする */
-		if err := tmpl.Execute(w, play.Results()); err != nil {
+		if err := renderTemplate(w, "skeleton/section07/step03/index", play.Results()); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
+			// fmt.Fprintln(w, err.Error())
 		}
 	})
 
@@ -71,5 +66,7 @@ func run() error {
 		http.Redirect(w, r, "/", http.StatusFound)
 	})
 
+	// ここは呼ばれる
+	fmt.Println("サーバーが起動しました")
 	return http.ListenAndServe(":8080", nil)
 }
